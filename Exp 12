@@ -1,0 +1,51 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    fstream file;
+    string name;
+    int roll;
+    float marks;
+
+    // Writing student records
+    file.open("student.csv", ios::out);
+    file << "Roll,Name,Marks\n";
+    file << "1,Amit,85\n";
+    file << "2,Riya,90\n";
+    file << "3,Rahul,78\n";
+
+    cout << "Data written successfully!" << endl;
+    file.close();
+
+    // Reading student records
+    file.open("student.csv", ios::in);
+
+    cout << "\nStudent Records:\n";
+    string line;
+
+    while (getline(file, line)) {
+        cout << line << endl;
+    }
+
+    // Using file pointers
+    cout << "\nFile Position: " << file.tellg() << endl;
+
+    file.seekg(0, ios::beg);
+    cout << "After seekg: " << file.tellg() << endl;
+
+    file.close();
+
+    // Using output file pointers
+    file.open("student.csv", ios::out | ios::app);
+    cout << "\nWrite Position: " << file.tellp() << endl;
+
+    file.seekp(0, ios::end);
+    file << "4,Neha,88\n";
+
+    cout << "After seekp: " << file.tellp() << endl;
+
+    file.close();
+
+    return 0;
+}
