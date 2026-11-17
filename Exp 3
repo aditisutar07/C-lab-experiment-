@@ -1,0 +1,86 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class Student {
+    char* name;
+
+public:
+    // Default Constructor
+    Student() {
+        name = new char[10];
+        strcpy(name, "Unknown");
+    }
+
+    // Parameterized Constructor
+    Student(const char* n) {
+        name = new char[strlen(n) + 1];
+        strcpy(name, n);
+    }
+
+    // Copy Constructor
+    Student(const Student& s) {
+        name = new char[strlen(s.name) + 1];
+        strcpy(name, s.name);
+    }
+
+    // Move Constructor
+    Student(Student&& s) noexcept {
+        name = s.name;
+        s.name = nullptr;
+    }
+
+    // Copy Assignment Operator
+    Student& operator=(const Student& s) {
+        if (this != &s) {
+            delete[] name;
+            name = new char[strlen(s.name) + 1];
+            strcpy(name, s.name);
+        }
+        return *this;
+    }
+
+    // Move Assignment Operator
+    Student& operator=(Student&& s) noexcept {
+        if (this != &s) {
+            delete[] name;
+            name = s.name;
+            s.name = nullptr;
+        }
+        return *this;
+    }
+
+    // Destructor
+    ~Student() {
+        delete[] name;
+    }
+
+    void display() {
+        cout << "Name: ";
+        if (name)
+            cout << name << endl;
+        else
+            cout << "Empty" << endl;
+    }
+};
+
+int main() {
+    Student s1;
+    Student s2("Amit");
+    Student s3(s2);
+    Student s4(move(s2));
+
+    cout << "Default Constructor: ";
+    s1.display();
+
+    cout << "Parameterized Constructor: ";
+    s3.display();
+
+    cout << "Copy Constructor: ";
+    s3.display();
+
+    cout << "Move Constructor: ";
+    s4.display();
+
+    return 0;
+}
