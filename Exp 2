@@ -1,0 +1,47 @@
+#include <iostream>
+using namespace std;
+
+class BankAccount {
+protected:
+    int accountNo;
+    float balance;
+
+public:
+    void setDetails(int a, float b) {
+        accountNo = a;
+        balance = b;
+    }
+
+    void display() {
+        cout << "Account No: " << accountNo << endl;
+        cout << "Balance: " << balance << endl;
+    }
+};
+
+class SavingsAccount : public BankAccount {
+private:
+    float interestRate;
+
+public:
+    void setInterest(float rate) {
+        interestRate = rate;
+    }
+
+    void calculateInterest() {
+        cout << "Interest: "
+             << balance * interestRate / 100 << endl;
+    }
+};
+
+int main() {
+    SavingsAccount s;
+
+    s.setDetails(101, 10000);
+    s.setInterest(5);
+
+    cout << "--- Savings Account Details ---" << endl;
+    s.display();
+    s.calculateInterest();
+
+    return 0;
+}
