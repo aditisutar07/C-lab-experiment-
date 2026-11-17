@@ -1,0 +1,39 @@
+#include <iostream>
+using namespace std;
+
+class Singleton {
+private:
+    static Singleton* instance;
+
+    // Private constructor
+    Singleton() {
+        cout << "Singleton Object Created" << endl;
+    }
+
+public:
+    static Singleton* getInstance() {
+        if (instance == NULL) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+
+    void display() {
+        cout << "Singleton Design Pattern" << endl;
+    }
+};
+
+// Initialize static member
+Singleton* Singleton::instance = NULL;
+
+int main() {
+    Singleton* obj1 = Singleton::getInstance();
+    Singleton* obj2 = Singleton::getInstance();
+
+    obj1->display();
+
+    if (obj1 == obj2)
+        cout << "Both objects are same";
+
+    return 0;
+}
