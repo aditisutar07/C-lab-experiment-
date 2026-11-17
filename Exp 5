@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+
+// Base Class
+class Person {
+protected:
+    string name;
+    int age;
+
+public:
+    void getPersonDetails() {
+        cout << "Enter Name: ";
+        cin >> name;
+        cout << "Enter Age: ";
+        cin >> age;
+    }
+
+    void displayPerson() {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+    }
+};
+
+// Single Inheritance
+class Student : public Person {
+protected:
+    int rollNo;
+
+public:
+    void getStudentDetails() {
+        cout << "Enter Roll No: ";
+        cin >> rollNo;
+    }
+
+    void displayStudent() {
+        displayPerson();
+        cout << "Roll No: " << rollNo << endl;
+    }
+};
+
+// Multilevel Inheritance
+class GraduateStudent : public Student {
+private:
+    string course;
+
+public:
+    void getGraduateDetails() {
+        cout << "Enter Course: ";
+        cin >> course;
+    }
+
+    void displayGraduate() {
+        displayStudent();
+        cout << "Course: " << course << endl;
+    }
+};
+
+int main() {
+    GraduateStudent g;
+
+    cout << "--- University Student Details ---" << endl;
+
+    g.getPersonDetails();
+    g.getStudentDetails();
+    g.getGraduateDetails();
+
+    cout << "\n--- Student Information ---" << endl;
+    g.displayGraduate();
+
+    return 0;
+}
