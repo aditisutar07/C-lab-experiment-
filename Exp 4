@@ -1,0 +1,35 @@
+#include <iostream>
+#include <memory>
+using namespace std;
+
+class Student {
+public:
+    string name;
+
+    Student(string n) {
+        name = n;
+        cout << "Constructor: " << name << endl;
+    }
+
+    ~Student() {
+        cout << "Destructor: " << name << endl;
+    }
+};
+
+int main() {
+
+    // unique_ptr
+    unique_ptr<Student> s1 = make_unique<Student>("Amit");
+    cout << "Unique Pointer: " << s1->name << endl;
+
+    // shared_ptr
+    shared_ptr<Student> s2 = make_shared<Student>("Riya");
+    shared_ptr<Student> s3 = s2;
+
+    cout << "Shared Pointer: " << s2->name << endl;
+    cout << "Reference Count: " << s2.use_count() << endl;
+
+    cout << "\nMemory Management Completed!" << endl;
+
+    return 0;
+}
