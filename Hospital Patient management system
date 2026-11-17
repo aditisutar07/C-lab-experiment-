@@ -1,0 +1,246 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Base Class
+class Person {
+protected:
+    int id;
+    string name;
+    int age;
+    string gender;
+
+public:
+    void getPersonDetails() {
+        cout << "Enter Patient ID: ";
+        cin >> id;
+
+        cin.ignore();
+        cout << "Enter Patient Name: ";
+        getline(cin, name);
+
+        cout << "Enter Age: ";
+        cin>>age;
+        cout << "Enter Gender: ";
+        cin >> gender;
+    }
+
+    void displayPersonDetails() {
+        cout << "\nPatient ID: " << id;
+        cout << "\nName: " << name;
+        cout << "\nAge: " << age;
+        cout << "\nGender: " << gender;
+    }
+};
+
+class Patient : public Person {
+private:
+    string disease;
+    string doctor;
+    int roomNo;
+    double bill;
+
+public:
+    // Add Patient
+    void addPatient() {
+        cout << "\n--- Enter Patient Details ---\n";
+
+        getPersonDetails();
+
+        cin.ignore();
+        cout << "Enter Disease: ";
+        getline(cin, disease);
+
+        cout << "Enter Doctor Name: ";
+        getline(cin, doctor);
+
+        cout << "Enter Room Number: ";
+        cin >> roomNo;
+
+        cout << "Enter Hospital Bill: ";
+        cin >> bill;
+
+        cout << "\nPatient Added Successfully!\n";
+    }
+
+    // Display Patient
+    void displayPatient() {
+        displayPersonDetails();
+
+        cout << "\nDisease: " << disease;
+        cout << "\nDoctor: " << doctor;
+        cout << "\nRoom Number: " << roomNo;
+        cout << "\nHospital Bill: Rs. " << bill;
+        cout << "\n-----------------------------\n";
+    }
+
+    // Search Patient
+    int getID() {
+        return id;
+    }
+
+    // Update Bill
+    void updateBill(double amount) {
+        bill += amount;
+        cout << "\nBill Updated Successfully!\n";
+    }
+
+    // Discharge Patient
+    void dischargePatient() {
+        cout << "\nPatient " << name
+             << " has been discharged.\n";
+    }
+};
+
+// Hospital Management Class
+class Hospital {
+private:
+    Patient patients[100];
+    int count;
+
+public:
+    Hospital() {
+        count = 0;
+    }
+
+    // Add Patient
+    void addNewPatient() {
+        if (count < 100) {
+            patients[count].addPatient();
+            count++;
+        } else {
+            cout << "\nHospital Record is Full!\n";
+        }
+    }
+
+    // Display All Patients
+    void displayAllPatients() {
+        if (count == 0) {
+            cout << "\nNo Patient Records Found!\n";
+            return;
+        }
+
+        cout << "\n===== PATIENT RECORDS =====\n";
+
+        for (int i = 0; i < count; i++) {
+            patients[i].displayPatient();
+        }
+    }
+
+    void searchPatient() {
+        int searchID;
+        cout << "\nEnter Patient ID to Search: ";
+        cin >> searchID;
+
+        for (int i = 0; i < count; i++) {
+            if (patients[i].getID() == searchID) {
+                cout << "\nPatient Found!\n";
+                patients[i].displayPatient();
+                return;
+            }
+        }
+
+        cout << "\nPatient Not Found!\n";
+    }
+
+    void updatePatientBill() {
+        int searchID;
+        double amount;
+
+        cout << "\nEnter Patient ID: ";
+        cin >> searchID;
+
+        for (int i = 0; i < count; i++) {
+            if (patients[i].getID() == searchID) {
+                cout << "Enter Additional Bill Amount: ";
+                cin >> amount;
+
+                if (amount >= 0) {
+                    patients[i].updateBill(amount);
+                } else {
+                    cout << "Invalid Amount!\n";
+                }
+                return;
+            }
+        }
+
+        cout << "\nPatient Not Found!\n";
+    }
+
+    void discharge() {
+        int searchID;
+
+        cout << "\nEnter Patient ID to Discharge: ";
+        cin >> searchID;
+
+        for (int i = 0; i < count; i++) {
+            if (patients[i].getID() == searchID) {
+                patients[i].dischargePatient();
+
+                // Remove patient from records
+                for (int j = i; j < count - 1; j++) {
+                    patients[j] = patients[j + 1];
+                }
+
+                count--;
+                cout << "Record Removed Successfully!\n";
+                return;
+            }
+        }
+
+        cout << "\nPatient Not Found!\n";
+    }
+};
+
+int main() {
+    Hospital hospital;
+    int choice;
+
+    do {
+        cout << "\n\n================================";
+        cout << "\n HOSPITAL PATIENT MANAGEMENT";
+        cout << "\n================================";
+        cout << "\n1. Add New Patient";
+        cout << "\n2. Display All Patients";
+        cout << "\n3. Search Patient";
+        cout << "\n4. Update Patient Bill";
+        cout << "\n5. Discharge Patient";
+        cout << "\n6. Exit";
+        cout << "\n================================";
+        cout << "\nEnter Your Choice: ";
+
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                hospital.addNewPatient();
+                break;
+
+            case 2:
+                hospital.displayAllPatients();
+                break;
+
+            case 3:
+                hospital.searchPatient();
+                break;
+
+            case 4:
+                hospital.updatePatientBill();
+                break;
+
+            case 5:
+                hospital.discharge();
+                break;
+
+            case 6:
+                cout << "\nThank You for Using Hospital System!\n";
+                break;
+
+            default:
+                cout << "\nInvalid Choice! Try Again.\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
